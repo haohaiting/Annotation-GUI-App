@@ -332,19 +332,3 @@ class Ui_MainWindow(object):
         self.pushButton_13.setText(_translate("MainWindow", "Edit"))
         self.pushButton_14.setText(_translate("MainWindow", "Save"))
         self.actionOpen_Directory.setText(_translate("MainWindow", "Open Directory"))
-
-
-class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
-
-    def __init__(self):
-        QtWidgets.QMainWindow.__init__(self)
-        Ui_MainWindow.__init__(self)
-        self.setupUi(self)
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
