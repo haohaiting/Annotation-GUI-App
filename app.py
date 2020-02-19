@@ -19,11 +19,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
+        self.setWindowTitle(__appname__)
 
         self.dir_name = None
+        self.save_dir = "./output/"
         self.files = []
 
         self.OpenDirBtn.pressed.connect(self.openDir)
+        self.fileListWidget.itemDoubleClicked.connect(
+            self.fileitemDoubleClicked)
+
 
     def openDir(self):
         # wait user choose a directory
@@ -35,6 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             QErrorMessage("No .jpg images in this directory.")
             print("Error!")  # no .jpg files
         else:
+            print("Open Directory: ", self.dir_name)
             self.load_images()
 
         # update the window title
@@ -54,12 +60,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def scan_dir(self):
         self.files = os.listdir(self.dir_name)
         for file in self.files:
-            # all the frame files are .jpg file
+            # all the frame files in this project are .jpg files
             if not file.endswith('jpg'):
                 self.files.remove(file)
+        self.files = sorted(self.files)
+
 
     def load_images(self):
-        pass
+        self.list_images()
+        path = "/".join((self.dir_name, self.files[0]))
+        self.load_image(path)
+    
+    def load_image(self, filename):
+        print("Load...", filename)
+        pixMap = QPixmap(filename)
+        self.imageLabel.setPixmap(pixMap)
+    
+    def list_images(self):
+        self.fileListWidget.addItems(self.files)
+    
+    def fileitemDoubleClicked(self, item=None):
+        path = "/".join((self.dir_name, item.text()))
+        self.load_image(path)
 
 
 if __name__ == "__main__":
