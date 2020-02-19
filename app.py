@@ -34,17 +34,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # wait user choose a directory
         self.get_dir()
         # chekc all the .jpg files in that directory
-        self.scan_dir()
+        if self.dir_name != None and self.dir_name != '':
+            self.scan_dir()
+            if len(self.files) == 0:
+                QErrorMessage("No .jpg images in this directory.")
+                print("Error!")  # no .jpg files
+            else:
+                print("Open Directory: ", self.dir_name)
+                self.load_images()
 
-        if len(self.files) == 0:
-            QErrorMessage("No .jpg images in this directory.")
-            print("Error!")  # no .jpg files
-        else:
-            print("Open Directory: ", self.dir_name)
-            self.load_images()
-
-        # update the window title
-        self.setWindowTitle(__appname__ + " ---- " + self.dir_name)
+            # update the window title
+            self.setWindowTitle(__appname__ + " ---- " + self.dir_name)
     
     def get_dir(self):
         w = QWidget()
@@ -61,7 +61,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.files = os.listdir(self.dir_name)
         for file in self.files:
             # all the frame files in this project are .jpg files
-            if not file.endswith('jpg'):
+            if not file.endswith('.jpg'):
                 self.files.remove(file)
         self.files = sorted(self.files)
 

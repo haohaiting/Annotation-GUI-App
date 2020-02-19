@@ -12,26 +12,28 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        # main window
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1920, 1080)
+
+        # central widget
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-
+        self.centralwidget.setGeometry(QtCore.QRect(0, 1, 1920, 1080))
         self.centralwidget.setObjectName("centralwidget")
-
-        self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(0, 1, 1731, 1061))
-        self.groupBox.setTitle("")
-        self.groupBox.setObjectName("groupBox")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox)
+        # self.centralwidget.setContentsMargins(0,0,0,0)
+        
+        # central widget layout
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
         # ============================================
         # Left Part
         # ============================================
 
-        self.Left = QtWidgets.QGroupBox(self.groupBox)
+        self.Left = QtWidgets.QGroupBox(self.centralwidget)
         self.Left.setTitle("")
         self.Left.setObjectName("Left")
+        self.Left.setMaximumWidth(300)
         self.leftPart_verticalLayout = QtWidgets.QVBoxLayout(self.Left)
         self.leftPart_verticalLayout.setObjectName("leftPart_verticalLayout")
         self.leftPart_groupBox = QtWidgets.QGroupBox(self.Left)
@@ -125,6 +127,7 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(
             5, QtWidgets.QFormLayout.LabelRole, self.ifDay_label)
         self.ifDay_comboBox = QtWidgets.QComboBox(self.basicInfoGroup)
+        self.ifDay_comboBox.setMinimumWidth(120)
         self.ifDay_comboBox.setObjectName("ifDay_comboBox")
         self.ifDay_comboBox.addItem("")
         self.ifDay_comboBox.addItem("")
@@ -137,6 +140,7 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(
             6, QtWidgets.QFormLayout.LabelRole, self.weather_label)
         self.weather_comboBox = QtWidgets.QComboBox(self.basicInfoGroup)
+        self.weather_comboBox.setMinimumWidth(120)
         self.weather_comboBox.setObjectName("weather_comboBox")
         self.weather_comboBox.addItem("")
         self.weather_comboBox.addItem("")
@@ -156,7 +160,7 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(
             8, QtWidgets.QFormLayout.LabelRole, self.ifEgo_label)
         self.ifEgo_comboBox = QtWidgets.QComboBox(self.basicInfoGroup)
-        self.ifEgo_comboBox.setEnabled(True)
+        self.ifEgo_comboBox.setMinimumWidth(120)
         self.ifEgo_comboBox.setObjectName("ifEgo_comboBox")
         self.ifEgo_comboBox.addItem("")
         self.ifEgo_comboBox.addItem("")
@@ -170,6 +174,7 @@ class Ui_MainWindow(object):
             9, QtWidgets.QFormLayout.LabelRole, self.egoReason_label)
 
         self.egoReason_comboBox = QtWidgets.QComboBox(self.basicInfoGroup)
+        self.egoReason_comboBox.setMinimumWidth(120)
         self.egoReason_comboBox.setObjectName("egoReason_comboBox")
         self.egoReason_comboBox.addItem("")
         self.egoReason_comboBox.addItem("")
@@ -214,8 +219,9 @@ class Ui_MainWindow(object):
         # ============================================
         # Middle Part
         # ============================================
-        self.Middle = QtWidgets.QGroupBox(self.groupBox)
-        self.Middle.setMinimumSize(QtCore.QSize(900, 0))
+        self.Middle = QtWidgets.QGroupBox(self.centralwidget)
+        # self.Middle.setMinimumSize(QtCore.QSize(800, 0))
+
         self.Middle.setTitle("")
         self.Middle.setObjectName("Middle")
 
@@ -262,11 +268,14 @@ class Ui_MainWindow(object):
         # Right Part
         # ============================================
 
-        self.Right = QtWidgets.QGroupBox(self.groupBox)
+        self.Right = QtWidgets.QGroupBox(self.centralwidget)
         self.Right.setTitle("")
         self.Right.setObjectName("Right")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.Right)
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.Right.setMaximumWidth(300)
+
+        self.rightPart_verticalLayout = QtWidgets.QVBoxLayout(self.Right)
+        self.rightPart_verticalLayout.setObjectName("rightPart_verticalLayout")
+
         self.Funcitons_3 = QtWidgets.QGroupBox(self.Right)
         self.Funcitons_3.setObjectName("Funcitons_3")
         self.formLayout_2 = QtWidgets.QFormLayout(self.Funcitons_3)
@@ -326,10 +335,10 @@ class Ui_MainWindow(object):
         self.ObjectReasonList = QtWidgets.QListView(self.Funcitons_3)
         self.ObjectReasonList.setObjectName("ObjectReasonList")
         self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.ObjectReasonList)
-        self.verticalLayout_5.addWidget(self.Funcitons_3)
+        self.rightPart_verticalLayout.addWidget(self.Funcitons_3)
         self.ObjectList = QtWidgets.QListView(self.Right)
         self.ObjectList.setObjectName("ObjectList")
-        self.verticalLayout_5.addWidget(self.ObjectList)
+        self.rightPart_verticalLayout.addWidget(self.ObjectList)
 
         # prev, next buttons
         self.groupBox_7 = QtWidgets.QGroupBox(self.Right)
@@ -346,12 +355,12 @@ class Ui_MainWindow(object):
         self.pushButton_14 = QtWidgets.QPushButton(self.groupBox_7)
         self.pushButton_14.setObjectName("pushButton_14")
         self.horizontalLayout_3.addWidget(self.pushButton_14)
-        self.verticalLayout_5.addWidget(self.groupBox_7)
+        self.rightPart_verticalLayout.addWidget(self.groupBox_7)
         self.horizontalLayout.addWidget(self.Right)
 
         # file list
         self.fileListWidget = QtWidgets.QListWidget()
-        self.verticalLayout_5.addWidget(self.fileListWidget)
+        self.rightPart_verticalLayout.addWidget(self.fileListWidget)
 
 
 
@@ -370,6 +379,8 @@ class Ui_MainWindow(object):
 
         self.actionOpen_Directory = QtWidgets.QAction(MainWindow)
         self.actionOpen_Directory.setObjectName("actionOpen_Directory")
+        # self.actionOpen_Directory.triggered.connect(
+        #     lambda: self.clicked("Open Dir"))
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -380,6 +391,11 @@ class Ui_MainWindow(object):
 
         # function buttons
         self.OpenDirBtn.setText(_translate("MainWindow", "Open Dir"))
+        # self.actionOpen_Directory.setText(_translate("MainWindow", "Open"))
+        # self.actionOpen_Directory.setStatusTip(_translate(
+        #     "MainWindow", "Open directory"))
+        self.actionOpen_Directory.setShortcut(_translate("MainWindow", "Ctrl+O"))
+
         # self.SaveDirBtn.setText(_translate("MainWindow", "Change Save Dir"))
         self.NewBoxBtn.setText(_translate("MainWindow", "Create New RectBox"))
 
@@ -444,3 +460,8 @@ class Ui_MainWindow(object):
         self.pushButton_13.setText(_translate("MainWindow", "Edit"))
         self.pushButton_14.setText(_translate("MainWindow", "Save"))
         self.actionOpen_Directory.setText(_translate("MainWindow", "Open Directory"))
+
+
+# def clicked(self, text):
+#         self.label.setText(text)
+#         self.label.adjustSize()
