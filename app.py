@@ -37,7 +37,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.NewBoxBtn.pressed.connect(self.create_box)
 
         self.egoReason_comboBox.activated.connect(self.addEgoReason)
-        self.delEgoReasonBtn.pressed.connect(self.delEgoReason)
+        # self.delEgoReasonBtn.pressed.connect(self.delEgoReason)
         self.basicResetBtn.pressed.connect(self.resetBasicInfo)
         self.basicSaveBtn.pressed.connect(self.saveBasicInfo)
 
@@ -64,8 +64,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # ==================================================
 
         self.objReason_comboBox.activated.connect(self.addObjReason)
-        self.delObjReasonBtn.pressed.connect(self.delObjReason)
-
+        # self.delObjReasonBtn.pressed.connect(self.delObjReason)
+        
         self.resetObjBtn.pressed.connect(self.resetObj)
         self.addObjBtn.pressed.connect(self.addObjToList)
     
@@ -265,6 +265,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
     def addObjToList(self):
         print("Clicked add object button!")
+        _type = self.objTypes_comboBox.currentText()
+        _ifobj = self.ifObj_comboBox.currentText()
+
+        all_reasons = []
+        for idx in range(self.objReasonList.count()):
+            all_reasons.append(self.objReasonList.item(idx).text())
+
+        bboxes = {}
+        rowCount = self.bbox_tableWidget.rowCount()
+        for row in range(rowCount):
+            frame_num = self.bbox_tableWidget.item(row, 0).text()
+            bbox = self.bbox_tableWidget.item(row, 1).text()
+            bboxes[frame_num] = bbox
+
+        rowPos = self.obj_tableWidget.rowCount()
+        self.obj_tableWidget.insertRow(rowPos)
+        self.obj_tableWidget.setItem(rowPos, 0, QTableWidgetItem(_type))
+        self.obj_tableWidget.setItem(rowPos, 1, QTableWidgetItem(_ifobj))
+        self.obj_tableWidget.setItem(rowPos, 2, QTableWidgetItem(str(all_reasons)))
+        self.obj_tableWidget.setItem(rowPos, 3, QTableWidgetItem(str(bboxes)))
 
     def delObjFromList(self):
         print("Clicked del object button!")
@@ -290,6 +310,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # set pixmap onto the label widget
         self.imageLabel.setPixmap(self.pixMap)
         self.imageLabel.show()
+
+        # add to bbox list
+        self.add_bbox([100, 100, 50, 50])
+
+    def add_bbox(self, coordinates):
+        print("trying to add")
+        frame_num = self.fileListWidget.currentItem().text().split(".")[0]
+        rowPos = self.bbox_tableWidget.rowCount()
+        self.bbox_tableWidget.insertRow(rowPos)
+        self.bbox_tableWidget.setItem(rowPos, 0, QTableWidgetItem(frame_num))
+        self.bbox_tableWidget.setItem(rowPos, 1, QTableWidgetItem(str(coordinates)))
 
 
 if __name__ == "__main__":
