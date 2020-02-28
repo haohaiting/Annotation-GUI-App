@@ -346,7 +346,7 @@ class Ui_MainWindow(object):
 
         self.objType_label = QtWidgets.QLabel(self.objInfo_groupBox)
         self.objType_label.setObjectName("objType_label")
-        self.objInfo_formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.objType_label)
+        self.objInfo_formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.objType_label)
 
         self.objTypes_comboBox = QtWidgets.QComboBox(self.objInfo_groupBox)
         self.objTypes_comboBox.setObjectName("objTypes_comboBox")
@@ -356,23 +356,23 @@ class Ui_MainWindow(object):
         self.objTypes_comboBox.addItem("")
         self.objTypes_comboBox.addItem("")
         self.objTypes_comboBox.addItem("")
-        self.objInfo_formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.objTypes_comboBox)
+        self.objInfo_formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.objTypes_comboBox)
 
         self.ifObj_label = QtWidgets.QLabel(self.objInfo_groupBox)
         self.ifObj_label.setObjectName("ifObj_label")
-        self.objInfo_formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.ifObj_label)
+        self.objInfo_formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.ifObj_label)
 
         self.ifObj_comboBox = QtWidgets.QComboBox(self.objInfo_groupBox)
         self.ifObj_comboBox.setObjectName("ifObj_comboBox")
         self.ifObj_comboBox.setMinimumWidth(120)
         self.ifObj_comboBox.addItem("")
         self.ifObj_comboBox.addItem("")
-        self.objInfo_formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.ifObj_comboBox)
+        self.objInfo_formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.ifObj_comboBox)
 
         self.objReason_label = QtWidgets.QLabel(self.objInfo_groupBox)
         self.objReason_label.setObjectName("objReason_label")
         self.objInfo_formLayout.setWidget(
-            3, QtWidgets.QFormLayout.LabelRole, self.objReason_label)
+            2, QtWidgets.QFormLayout.LabelRole, self.objReason_label)
 
         self.objReason_comboBox = QtWidgets.QComboBox(self.objInfo_groupBox)
         self.objReason_comboBox.setObjectName("objReason_comboBox")
@@ -390,7 +390,7 @@ class Ui_MainWindow(object):
         self.objReason_comboBox.addItem("")
         self.objReason_comboBox.addItem("")
         self.objInfo_formLayout.setWidget(
-            3, QtWidgets.QFormLayout.FieldRole, self.objReason_comboBox)
+            2, QtWidgets.QFormLayout.FieldRole, self.objReason_comboBox)
 
         # self.delObjReasonBtn = QtWidgets.QPushButton(self.objInfo_groupBox)
         # self.delObjReasonBtn.setObjectName("delObjReasonBtn")
@@ -400,7 +400,7 @@ class Ui_MainWindow(object):
         self.objReasonList = MyQListWidget(self.objInfo_groupBox)
         self.objReasonList.setObjectName("objReasonList")
         self.objInfo_formLayout.setWidget(
-            4, QtWidgets.QFormLayout.FieldRole, self.objReasonList)
+            3, QtWidgets.QFormLayout.FieldRole, self.objReasonList)
         self.rightPart_verticalLayout.addWidget(self.objInfo_groupBox)
         
         # bounding box
@@ -432,7 +432,7 @@ class Ui_MainWindow(object):
         self.bbox_verticalLayout.addWidget(self.bbox_tableWidget)
 
         self.objInfo_formLayout.setWidget(
-            5, QtWidgets.QFormLayout.LabelRole, self.BBox)
+            4, QtWidgets.QFormLayout.LabelRole, self.BBox)
 
         # reset, delete, save button for single object
         self.objBtns_groupBox1 = QtWidgets.QGroupBox(self.Right)
