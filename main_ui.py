@@ -10,6 +10,34 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 
 
+class MyQListWidget(QtWidgets.QListWidget):
+
+    def __init__(self, parent):
+        super(QtWidgets.QListWidget, self).__init__(parent)
+
+    def keyPressEvent(self, event):
+        if event.key() == QtCore.Qt.Key_Delete or event.key() == QtCore.Qt.Key_Backspace:
+            self._del_item()
+
+    def _del_item(self):
+        # for item in self.selectedItems():
+        print("[Delete Reason] " + str(self.selectedItems()[0].text()))
+        self.takeItem(self.row(self.selectedItems()[0]))
+            
+
+class MyQTableWidget(QtWidgets.QTableWidget):
+
+    def __init__(self, parent):
+        super(QtWidgets.QTableWidget, self).__init__(parent)
+
+    def keyPressEvent(self, event):
+        if event.key() == QtCore.Qt.Key_Delete or event.key() == QtCore.Qt.Key_Backspace:
+            self._del_item()
+
+    def _del_item(self):
+        self.removeRow(self.row(self.selectedItems()[0]))
+
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         # main window
@@ -169,25 +197,41 @@ class Ui_MainWindow(object):
         self.egoReason_comboBox.addItem("")
         self.egoReason_comboBox.addItem("")
         self.egoReason_comboBox.addItem("")
+        self.egoReason_comboBox.addItem("")
+        self.egoReason_comboBox.addItem("")
+        self.egoReason_comboBox.addItem("")
+        self.egoReason_comboBox.addItem("")
+        self.egoReason_comboBox.addItem("")
+        self.egoReason_comboBox.addItem("")
+        self.egoReason_comboBox.addItem("")
         self.basicInfo_formLayout.setWidget(
             8, QtWidgets.QFormLayout.FieldRole, self.egoReason_comboBox)
 
+        # Handle by key_event
         # self.delEgoReasonBtn = QtWidgets.QPushButton(self.basicInfoGroup)
         # self.delEgoReasonBtn.setObjectName("delEgoReasonBtn")
         # self.basicInfo_formLayout.setWidget(
         #     9, QtWidgets.QFormLayout.LabelRole, self.delEgoReasonBtn)
+
+
+        # The appearance is not good
+        # self.reason_note = QtWidgets.QLabel(self.basicInfoGroup)
+        # self.reason_note.setObjectName("reasonNote")
+        # self.basicInfo_formLayout.setWidget(
+        #     9, QtWidgets.QFormLayout.LabelRole, self.reason_note
+        # )
         
-        self.EgoReasonList = QtWidgets.QListWidget(self.basicInfoGroup)
+        self.EgoReasonList = MyQListWidget(self.basicInfoGroup)
         self.EgoReasonList.setObjectName("EgoReasonList")
         self.basicInfo_formLayout.setWidget(
             9, QtWidgets.QFormLayout.FieldRole, self.EgoReasonList)
         
         # basic information related buttons
         # reset button
-        self.basicResetBtn = QtWidgets.QPushButton(self.basicInfoGroup)
-        self.basicResetBtn.setObjectName("basicResetBtn")
+        self.basicEditBtn = QtWidgets.QPushButton(self.basicInfoGroup)
+        self.basicEditBtn.setObjectName("basicEditBtn")
         self.basicInfo_formLayout.setWidget(
-            10, QtWidgets.QFormLayout.LabelRole, self.basicResetBtn)
+            10, QtWidgets.QFormLayout.LabelRole, self.basicEditBtn)
         # save button
         self.basicSaveBtn = QtWidgets.QPushButton(self.basicInfoGroup)
         self.basicSaveBtn.setEnabled(True)
@@ -221,6 +265,11 @@ class Ui_MainWindow(object):
         self.scrollArea = QtWidgets.QScrollArea(self.Middle)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
+        self.scrollArea.setVerticalScrollBarPolicy(
+            QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setHorizontalScrollBarPolicy(
+            QtCore.Qt.ScrollBarAlwaysOff)
+
         # self.scrollAreaWidgetContents = QtWidgets.QWidget()
         # self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 868, 932))
         # self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
@@ -228,11 +277,11 @@ class Ui_MainWindow(object):
 
         # try to load image using QLabel
         # maybe need canvas here
-        self.imageLabel = QtWidgets.QLabel()
-        self.scrollArea.setWidget(self.imageLabel)
+        # self.imageLabel = QtWidgets.QLabel()
+        # self.imageLabel.setAlignment(QtCore.Qt.AlignCenter)
+        # self.scrollArea.setWidget(self.imageLabel)
         self.middle_verticalLayout.addWidget(self.scrollArea)
         
-
         # control image flow
         self.playImage_groupBox = QtWidgets.QGroupBox(self.Middle)
         self.playImage_groupBox.setTitle("")
@@ -333,6 +382,13 @@ class Ui_MainWindow(object):
         self.objReason_comboBox.addItem("")
         self.objReason_comboBox.addItem("")
         self.objReason_comboBox.addItem("")
+        self.objReason_comboBox.addItem("")
+        self.objReason_comboBox.addItem("")
+        self.objReason_comboBox.addItem("")
+        self.objReason_comboBox.addItem("")
+        self.objReason_comboBox.addItem("")
+        self.objReason_comboBox.addItem("")
+        self.objReason_comboBox.addItem("")
         self.objInfo_formLayout.setWidget(
             3, QtWidgets.QFormLayout.FieldRole, self.objReason_comboBox)
 
@@ -341,7 +397,7 @@ class Ui_MainWindow(object):
         # self.objInfo_formLayout.setWidget(
         #     4, QtWidgets.QFormLayout.LabelRole, self.delObjReasonBtn)
 
-        self.objReasonList = QtWidgets.QListWidget(self.objInfo_groupBox)
+        self.objReasonList = MyQListWidget(self.objInfo_groupBox)
         self.objReasonList.setObjectName("objReasonList")
         self.objInfo_formLayout.setWidget(
             4, QtWidgets.QFormLayout.FieldRole, self.objReasonList)
@@ -358,7 +414,7 @@ class Ui_MainWindow(object):
 
         self.bbox_label = QtWidgets.QLabel("Bounding Boxes")
 
-        self.bbox_tableWidget = QtWidgets.QTableWidget(self.objInfo_groupBox)
+        self.bbox_tableWidget = MyQTableWidget(self.objInfo_groupBox)
         self.bbox_tableWidget.setGeometry(QtCore.QRect(30, 200, 256, 192))
         self.bbox_tableWidget.setObjectName("bboxtableWidget")
         self.bbox_tableWidget.setColumnCount(2)
@@ -387,9 +443,9 @@ class Ui_MainWindow(object):
             self.objBtns_groupBox1)
         self.objBtns_horizontalLayout1.setObjectName("objBtns_horizontalLayout1")
 
-        self.resetObjBtn = QtWidgets.QPushButton(self.objBtns_groupBox1)
-        self.resetObjBtn.setObjectName("resetObjBtn")
-        self.objBtns_horizontalLayout1.addWidget(self.resetObjBtn)
+        # self.resetObjBtn = QtWidgets.QPushButton(self.objBtns_groupBox1)
+        # self.resetObjBtn.setObjectName("resetObjBtn")
+        # self.objBtns_horizontalLayout1.addWidget(self.resetObjBtn)
 
         # self.delBoxBtn = QtWidgets.QPushButton(self.objBtns_groupBox1)
         # self.delBoxBtn.setObjectName("delBoxBtn")
@@ -404,7 +460,7 @@ class Ui_MainWindow(object):
 
         # objects list
 
-        self.obj_tableWidget = QtWidgets.QTableWidget(self.Right)
+        self.obj_tableWidget = MyQTableWidget(self.Right)
         self.obj_tableWidget.setGeometry(QtCore.QRect(10, 0, 351, 192))
         self.obj_tableWidget.setObjectName("obj_tableWidget")
         self.obj_tableWidget.setColumnCount(4)
@@ -432,9 +488,9 @@ class Ui_MainWindow(object):
         self.objBtns_horizontalLayout2 = QtWidgets.QHBoxLayout(self.objBtns_groupBox2)
         self.objBtns_horizontalLayout2.setObjectName("objBtns_horizontalLayout2")
 
-        self.delObjBtn = QtWidgets.QPushButton(self.objBtns_groupBox2)
-        self.delObjBtn.setObjectName("delObjBtn")
-        self.objBtns_horizontalLayout2.addWidget(self.delObjBtn)
+        # self.delObjBtn = QtWidgets.QPushButton(self.objBtns_groupBox2)
+        # self.delObjBtn.setObjectName("delObjBtn")
+        # self.objBtns_horizontalLayout2.addWidget(self.delObjBtn)
 
         self.editObjBtn = QtWidgets.QPushButton(self.objBtns_groupBox2)
         self.editObjBtn.setObjectName("editObjBtn")
@@ -469,16 +525,18 @@ class Ui_MainWindow(object):
 
         # function buttons
         self.OpenDirBtn.setText(_translate("MainWindow", "Open Dir"))
-        self.OpenDirBtn.setStatusTip("Open a frame directory to load all the frames in it")
+        self.OpenDirBtn.setStatusTip(
+            "Open a frame directory to load all the frames in it. Shortcut [Ctrl+O]")
         # self.actionOpen_Directory.setText(_translate("MainWindow", "Open"))
         # self.actionOpen_Directory.setStatusTip(_translate(
         #     "MainWindow", "Open directory"))
-        self.actionOpen_Directory.setShortcut(_translate("MainWindow", "Ctrl+O"))
+        self.OpenDirBtn.setShortcut(_translate("MainWindow", "Ctrl+O"))
 
         # self.SaveDirBtn.setText(_translate("MainWindow", "Change Save Dir"))
         self.NewBoxBtn.setText(_translate("MainWindow", "Create New RectBox"))
         self.NewBoxBtn.setStatusTip(
-            "Create a bounding box on this image")
+            "Create a bounding box on this image. Shortcut [Ctrl+B]")
+        self.NewBoxBtn.setShortcut(_translate("MainWindow", "Ctrl+B"))
 
         # basic information group
         self.basicInfoGroup.setTitle(_translate("MainWindow", "Basic Information"))
@@ -504,36 +562,86 @@ class Ui_MainWindow(object):
         self.ifDay_comboBox.setItemText(1, _translate("MainWindow", "Night"))
 
         self.weather_label.setText(_translate("MainWindow", "Weather"))
+        self.weather_label.setStatusTip(
+            "Rainy: If it's rainy; Snowy: if the road is covered by snow; Normal: others.")
         self.weather_comboBox.setItemText(0, _translate("MainWindow", "Normal"))
         self.weather_comboBox.setItemText(1, _translate("MainWindow", "Rainy"))
         self.weather_comboBox.setItemText(2, _translate("MainWindow", "Snowy"))
 
         self.ifEgo_label.setText(_translate("MainWindow", "If Ego Involved"))
+        self.ifEgo_label.setStatusTip(
+            "If ego car is involved in the car accident.")
         self.ifEgo_comboBox.setItemText(0, _translate("MainWindow", "Yes"))
         self.ifEgo_comboBox.setItemText(1, _translate("MainWindow", "No"))
 
         # self.delEgoReasonBtn.setText(_translate("MainWindow", "Delete"))
 
         self.egoReason_label.setText(_translate("MainWindow", "Ego Car Reason"))
-        self.egoReason_comboBox.setItemText(0, _translate("MainWindow", "No Fault"))
-        self.egoReason_comboBox.setItemText(1, _translate("MainWindow", "Hard to define"))
-        self.egoReason_comboBox.setItemText(2, _translate("MainWindow", "None"))
-        self.egoReason_comboBox.setItemText(3, _translate("MainWindow", "Speedy"))
-        self.egoReason_comboBox.setItemText(4, _translate("MainWindow", "Poor Judgement"))
-        self.egoReason_comboBox.setItemText(5, _translate("MainWindow", "Slippery Road"))
+        self.egoReason_comboBox.setItemText(
+            0, _translate("MainWindow", "none"))
+        self.egoReason_comboBox.setItemText(
+            1, _translate("MainWindow", "no fault"))
+        self.egoReason_comboBox.setItemText(
+            2, _translate("MainWindow", "hard to define"))
+        self.egoReason_comboBox.setItemText(
+            3, _translate("MainWindow", "unclear view"))
+        self.egoReason_comboBox.setItemText(
+            4, _translate("MainWindow", "speedy"))
+        self.egoReason_comboBox.setItemText(
+            5, _translate("MainWindow", "poor judgement"))
+        self.egoReason_comboBox.setItemText(
+            6, _translate("MainWindow", "traffic violation"))
+        self.egoReason_comboBox.setItemText(
+            7, _translate("MainWindow", "negligence"))
+        self.egoReason_comboBox.setItemText(
+            8, _translate("MainWindow", "change lane"))
+        self.egoReason_comboBox.setItemText(
+            9, _translate("MainWindow", "sudden move"))
+        self.egoReason_comboBox.setItemText(
+            10, _translate("MainWindow", "slippery road"))
+        self.egoReason_comboBox.setItemText(
+            11, _translate("MainWindow", "uneven road"))
+        self.egoReason_comboBox.setItemText(
+            12, _translate("MainWindow", "obstacles on the road"))
 
-        self.basicResetBtn.setText(_translate("MainWindow", "Reset"))
+
+        # self.reason_note.setText("If ego car is not involved, choose 'None'; 
+        # If you choose 'Hard to define' or 'No fault', 
+        # do not choose other reason. Multiple choice except the above situation.")
+
+        self.basicEditBtn.setText(_translate("MainWindow", "Edit"))
         self.basicSaveBtn.setText(_translate("MainWindow", "Save"))
 
         # buttons to play images
         self.prev5Btn.setText(_translate("MainWindow", "<< Prev 5"))
+        self.prev5Btn.setShortcut(_translate("MainWindow", 'A'))
+        self.prev5Btn.setStatusTip(
+            "Check the frame which is 5 frames before current frame. Shortcut [A]")
+        
         self.prevBtn.setText(_translate("MainWindow", "< Prev"))
+        self.prevBtn.setShortcut(_translate("MainWindow", 'S'))
+        self.prevBtn.setStatusTip(
+            "Check previous frame. Shortcut [S]")
+
         self.nextBtn.setText(_translate("MainWindow", "Next >"))
+        self.nextBtn.setShortcut(_translate("MainWindow", 'D'))
+        self.nextBtn.setStatusTip(
+            "Check next frame. Shortcut [D]")
+
         self.next5Btn.setText(_translate("MainWindow", "Next 5 >>"))
+        self.next5Btn.setShortcut(_translate("MainWindow", 'F'))
+        self.next5Btn.setStatusTip(
+            "Check the frame which is 5 frames after current frame. Shortcut [F]")
 
         self.setStartBtn.setText(_translate("MainWindow", "set as Start Frame"))
+        self.setStartBtn.setStatusTip(
+            "Set current frame as the clip start frame.")
         self.setEndBtn.setText(_translate("MainWindow", "set as End Frame"))
+        self.setEndBtn.setStatusTip(
+            "Set current frame as the clip end frame.")
         self.setCrashStartBtn.setText(_translate("MainWindow", "set as Crash Start Frame"))
+        self.setCrashStartBtn.setStatusTip(
+            "Set current frame as the crash start frame, which means the accident is about to happed.")
 
         self.objInfo_groupBox.setTitle(_translate("MainWindow", "Objects Information"))
         self.objInfo_groupBox.setStyleSheet('QGroupBox:title {'
@@ -548,7 +656,7 @@ class Ui_MainWindow(object):
         self.objTypes_comboBox.setItemText(0, _translate("MainWindow", "Car"))
         self.objTypes_comboBox.setItemText(1, _translate("MainWindow", "Truck"))
         self.objTypes_comboBox.setItemText(2, _translate("MainWindow", "Bike"))
-        self.objTypes_comboBox.setItemText(3, _translate("MainWindow", "Person"))
+        self.objTypes_comboBox.setItemText(3, _translate("MainWindow", "Pedestrian"))
         self.objTypes_comboBox.setItemText(4, _translate("MainWindow", "Animal"))
 
         self.ifObj_label.setText(_translate("MainWindow", "If Involved"))
@@ -558,12 +666,32 @@ class Ui_MainWindow(object):
         # self.delObjReasonBtn.setText(_translate("MainWindow", "Delete"))
 
         self.objReason_label.setText(_translate("MainWindow", "Reason"))
-        self.objReason_comboBox.setItemText(0, _translate("MainWindow", "No Fault"))
-        self.objReason_comboBox.setItemText(1, _translate("MainWindow", "Hard to define"))
-        self.objReason_comboBox.setItemText(2, _translate("MainWindow", "None"))
-        self.objReason_comboBox.setItemText(3, _translate("MainWindow", "Speedy"))
-        self.objReason_comboBox.setItemText(4, _translate("MainWindow", "Poor Judgement"))
-        self.objReason_comboBox.setItemText(5, _translate("MainWindow", "Slippery Road"))
+        self.objReason_comboBox.setItemText(
+            0, _translate("MainWindow", "none"))
+        self.objReason_comboBox.setItemText(
+            1, _translate("MainWindow", "no fault"))
+        self.objReason_comboBox.setItemText(
+            2, _translate("MainWindow", "hard to define"))
+        self.objReason_comboBox.setItemText(
+            3, _translate("MainWindow", "unclear view"))
+        self.objReason_comboBox.setItemText(
+            4, _translate("MainWindow", "speedy"))
+        self.objReason_comboBox.setItemText(
+            5, _translate("MainWindow", "poor judgement"))
+        self.objReason_comboBox.setItemText(
+            6, _translate("MainWindow", "traffic violation"))
+        self.objReason_comboBox.setItemText(
+            7, _translate("MainWindow", "negligence"))
+        self.objReason_comboBox.setItemText(
+            8, _translate("MainWindow", "change lane"))
+        self.objReason_comboBox.setItemText(
+            9, _translate("MainWindow", "sudden move"))
+        self.objReason_comboBox.setItemText(
+            10, _translate("MainWindow", "slippery road"))
+        self.objReason_comboBox.setItemText(
+            11, _translate("MainWindow", "uneven road"))
+        self.objReason_comboBox.setItemText(
+            12, _translate("MainWindow", "obstacles on the road"))
 
         # self.bbox_label.setText(_translate("MainWindow", "Bounding Box"))
 
@@ -581,13 +709,19 @@ class Ui_MainWindow(object):
         item = self.obj_tableWidget.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "B-Boxes"))
 
-        self.resetObjBtn.setText(_translate("MainWindow", "Reset"))
+        # self.resetObjBtn.setText(_translate("MainWindow", "Reset"))
         # self.delBoxBtn.setText(_translate("MainWindow", "Delete"))
         self.addObjBtn.setText(_translate("MainWindow", "Add"))
+        self.addObjBtn.setStatusTip(
+            "Add the current object to object list.")
 
-        self.delObjBtn.setText(_translate("MainWindow", "Delete"))
+        # self.delObjBtn.setText(_translate("MainWindow", "Delete"))
         self.editObjBtn.setText(_translate("MainWindow", "Edit"))
-        self.saveObjBtn.setText(_translate("MainWindow", "Save"))
+        self.editObjBtn.setStatusTip(
+            "Edit select object in the list.")
+        self.saveObjBtn.setText(_translate("MainWindow", "Save and Reset"))
+        self.saveObjBtn.setStatusTip(
+            "Save all the objects in the list and reset all the forms including basic information.")
 
         style = '''
                 QGroupBox {
