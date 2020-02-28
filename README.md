@@ -1,3 +1,3 @@
 # Annotation-GUI-App
 
-![look](sample.png)
+![look](ui/sample.png)
