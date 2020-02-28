@@ -121,9 +121,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # handle save path
                 save_filename = self.dir_name.split("/")[-1] + '.txt'
                 self.save_path = "/".join((self.dir_name, save_filename))
-                if not os.path.exists(self.save_path):
-                    os.mkdir(save_path)
-                else:
+                if os.path.exists(self.save_path):
                     with open(self.save_path) as f:
                         lines = f.readlines()
                         if lines[-1].startswith("0"):
@@ -318,16 +316,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print("[Error] Save Failed: No more than 3s before car crash..")
                 return False
 
-            with open(self.save_path) as f:
-                lines = f.readlines()
-                for line in lines:
-                    if line.startswith("0"):
-                        if int(line.split(",")[0]) <= int(self.startFrame_lineEdit.text()) <= int(line.split(",")[2]) or \
-                        int(line.split(",")[0]) <= int(self.endFrame_lineEdit.text()) <= int(line.split(",")[2]):
-                            self.emsg.showMessage(
-                                "The frames are overlapped with a saved clip, please check.")
-                            print("[Error] Save Failed: frame overlapped with saved ones.")
-                            return False
+            if os.path.exists(self.save_path):
+                with open(self.save_path) as f:
+                    lines = f.readlines()
+                    for line in lines:
+                        if line.startswith("0"):
+                            if int(line.split(",")[0]) <= int(self.startFrame_lineEdit.text()) <= int(line.split(",")[2]) or \
+                            int(line.split(",")[0]) <= int(self.endFrame_lineEdit.text()) <= int(line.split(",")[2]):
+                                self.emsg.showMessage(
+                                    "The frames are overlapped with a saved clip, please check.")
+                                print("[Error] Save Failed: frame overlapped with saved ones.")
+                                return False
 
             # check 
             if self.ifEgo_comboBox.currentText() == "No":
@@ -358,9 +357,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for idx in range(self.EgoReasonList.count()):
             all_items.append(self.EgoReasonList.item(idx).text())
 
+        mode = 'a' if os.path.exists(self.save_path) else 'w'
         # if pass all the check
         if self.checkBasicInfo(all_items):
-            with open(self.save_path, 'a') as f:
+            with open(self.save_path, mode) as f:
                 basicInfo = ",".join((self.startFrame_lineEdit.text(),
                                     self.crashStartFrame_lineEdit.text(),
                                     self.endFrame_lineEdit.text(),

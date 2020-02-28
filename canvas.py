@@ -38,13 +38,11 @@ class Canvas(QLabel):
             p.setBrush(br)
             p.drawRect(QRect(self.begin, self.end))
         elif self.load == False and self.begin != QPoint() and self.end != QPoint():
-            print("11111111111111111111111")
             p = QPainter(self)
             br = QBrush(QColor(100, 10, 10, 40))
             p.setBrush(br)
             p.drawRect(QRect(self.show_top_left, self.show_bottom_right))
         elif self.load:
-            print("222222222222222222222222")
             p = QPainter(self)
             br = QBrush(QColor(100, 10, 10, 40))
             p.setBrush(br)
