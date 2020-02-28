@@ -125,6 +125,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     with open(self.save_path) as f:
                         lines = f.readlines()
                         if lines[-1].startswith("0"):
+                            print("Load..." ,lines[-1])
                             self.loadBasicInfo(lines[-1])
 
                 # load images
