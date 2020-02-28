@@ -1,10 +1,19 @@
+"""
+@author: Haiting Hao
+@version: 1.0.1
+@email: hh7702@rit.edu
+"""
+
+
 # import basic libraries
 import sys
 import os
 import json
 import re
 import time
-import numpy as np
+
+# I just do not want to handle numpy issue in pyinstaller...
+# import numpy as np
 
 # import PyQt5 libraries
 from PyQt5.QtGui import *
@@ -623,10 +632,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.emsg.showMessage(
                     "The labelled frame doesn't include crash start frame.")
                 return
-            elif np.count_nonzero(np.diff(sorted(np.asarray(list(bboxes.keys()), dtype=int))) == 5) != len(bboxes) - 1:
-                self.emsg.showMessage(
-                    "Please check the interval of the frames")
-                return
+            # elif np.count_nonzero(np.diff(sorted(np.asarray(list(bboxes.keys()), dtype=int))) == 5) != len(bboxes) - 1:
+            else:
+                for i in range(len(bboxes) - 1):
+                    if int(list(bboxes.keys())[i+1]) - int(list(bboxes.keys())[i]) != 5:
+                        self.emsg.showMessage(
+                            "Please check the interval of the frames")
+                        return
         else:
             if set(bboxes.keys()) - set(valid_frame_list) != set():
                 self.emsg.showMessage(

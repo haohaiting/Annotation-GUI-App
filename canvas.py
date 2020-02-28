@@ -1,3 +1,9 @@
+"""
+@author: Haiting Hao
+@version: 1.0.1
+@email: hh7702@rit.edu
+"""
+
 # import PyQt5 libraries
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
