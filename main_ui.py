@@ -23,7 +23,7 @@ class MyQListWidget(QtWidgets.QListWidget):
         # for item in self.selectedItems():
         print("[Delete Reason] " + str(self.selectedItems()[0].text()))
         self.takeItem(self.row(self.selectedItems()[0]))
-            
+
 
 class MyQTableWidget(QtWidgets.QTableWidget):
 
@@ -49,7 +49,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setGeometry(QtCore.QRect(0, 1, 1920, 1080))
         self.centralwidget.setObjectName("centralwidget")
         # self.centralwidget.setContentsMargins(0,0,0,0)
-        
+
         # central widget layout
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -72,10 +72,11 @@ class Ui_MainWindow(object):
         self.Funcitons.setObjectName("Funcitons")
 
         # set vertival layout
-        self.functionBtns_verticalLayout = QtWidgets.QVBoxLayout(self.Funcitons)
+        self.functionBtns_verticalLayout = QtWidgets.QVBoxLayout(
+            self.Funcitons)
         self.functionBtns_verticalLayout.setObjectName(
             "functionBtns_verticalLayout")
-        
+
         # open dir button
         self.OpenDirBtn = QtWidgets.QPushButton(self.Funcitons)
         self.OpenDirBtn.setObjectName("OpenDirBtn")
@@ -134,7 +135,8 @@ class Ui_MainWindow(object):
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_2.setObjectName("line_2")
-        self.basicInfo_formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.line_2)
+        self.basicInfo_formLayout.setWidget(
+            3, QtWidgets.QFormLayout.LabelRole, self.line_2)
 
         # day or night
         self.ifDay_label = QtWidgets.QLabel(self.basicInfoGroup)
@@ -160,14 +162,16 @@ class Ui_MainWindow(object):
         self.weather_comboBox.addItem("")
         self.weather_comboBox.addItem("")
         self.weather_comboBox.addItem("")
-        self.basicInfo_formLayout.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.weather_comboBox)
+        self.basicInfo_formLayout.setWidget(
+            5, QtWidgets.QFormLayout.FieldRole, self.weather_comboBox)
 
         # horizontal line
         self.line_3 = QtWidgets.QFrame(self.basicInfoGroup)
         self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
-        self.basicInfo_formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.line_3)
+        self.basicInfo_formLayout.setWidget(
+            6, QtWidgets.QFormLayout.LabelRole, self.line_3)
 
         # if ego involved
         self.ifEgo_label = QtWidgets.QLabel(self.basicInfoGroup)
@@ -213,19 +217,18 @@ class Ui_MainWindow(object):
         # self.basicInfo_formLayout.setWidget(
         #     9, QtWidgets.QFormLayout.LabelRole, self.delEgoReasonBtn)
 
-
         # The appearance is not good
         # self.reason_note = QtWidgets.QLabel(self.basicInfoGroup)
         # self.reason_note.setObjectName("reasonNote")
         # self.basicInfo_formLayout.setWidget(
         #     9, QtWidgets.QFormLayout.LabelRole, self.reason_note
         # )
-        
+
         self.EgoReasonList = MyQListWidget(self.basicInfoGroup)
         self.EgoReasonList.setObjectName("EgoReasonList")
         self.basicInfo_formLayout.setWidget(
             9, QtWidgets.QFormLayout.FieldRole, self.EgoReasonList)
-        
+
         # basic information related buttons
         # reset button
         self.basicEditBtn = QtWidgets.QPushButton(self.basicInfoGroup)
@@ -238,7 +241,7 @@ class Ui_MainWindow(object):
         self.basicSaveBtn.setObjectName("basicSaveBtn")
         self.basicInfo_formLayout.setWidget(
             10, QtWidgets.QFormLayout.FieldRole, self.basicSaveBtn)
-        
+
         # file list
         self.fileListWidget = QtWidgets.QListWidget()
 
@@ -281,13 +284,15 @@ class Ui_MainWindow(object):
         # self.imageLabel.setAlignment(QtCore.Qt.AlignCenter)
         # self.scrollArea.setWidget(self.imageLabel)
         self.middle_verticalLayout.addWidget(self.scrollArea)
-        
+
         # control image flow
         self.playImage_groupBox = QtWidgets.QGroupBox(self.Middle)
         self.playImage_groupBox.setTitle("")
         self.playImage_groupBox.setObjectName("playImage_groupBox")
-        self.playImageBtns_horizontalLayout = QtWidgets.QHBoxLayout(self.playImage_groupBox)
-        self.playImageBtns_horizontalLayout.setObjectName("playImageBtns_horizontalLayout")
+        self.playImageBtns_horizontalLayout = QtWidgets.QHBoxLayout(
+            self.playImage_groupBox)
+        self.playImageBtns_horizontalLayout.setObjectName(
+            "playImageBtns_horizontalLayout")
 
         self.prev5Btn = QtWidgets.QPushButton(self.playImage_groupBox)
         self.prev5Btn.setObjectName("prev5Btn")
@@ -346,7 +351,8 @@ class Ui_MainWindow(object):
 
         self.objType_label = QtWidgets.QLabel(self.objInfo_groupBox)
         self.objType_label.setObjectName("objType_label")
-        self.objInfo_formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.objType_label)
+        self.objInfo_formLayout.setWidget(
+            0, QtWidgets.QFormLayout.LabelRole, self.objType_label)
 
         self.objTypes_comboBox = QtWidgets.QComboBox(self.objInfo_groupBox)
         self.objTypes_comboBox.setObjectName("objTypes_comboBox")
@@ -356,18 +362,21 @@ class Ui_MainWindow(object):
         self.objTypes_comboBox.addItem("")
         self.objTypes_comboBox.addItem("")
         self.objTypes_comboBox.addItem("")
-        self.objInfo_formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.objTypes_comboBox)
+        self.objInfo_formLayout.setWidget(
+            0, QtWidgets.QFormLayout.FieldRole, self.objTypes_comboBox)
 
         self.ifObj_label = QtWidgets.QLabel(self.objInfo_groupBox)
         self.ifObj_label.setObjectName("ifObj_label")
-        self.objInfo_formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.ifObj_label)
+        self.objInfo_formLayout.setWidget(
+            1, QtWidgets.QFormLayout.LabelRole, self.ifObj_label)
 
         self.ifObj_comboBox = QtWidgets.QComboBox(self.objInfo_groupBox)
         self.ifObj_comboBox.setObjectName("ifObj_comboBox")
         self.ifObj_comboBox.setMinimumWidth(120)
         self.ifObj_comboBox.addItem("")
         self.ifObj_comboBox.addItem("")
-        self.objInfo_formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.ifObj_comboBox)
+        self.objInfo_formLayout.setWidget(
+            1, QtWidgets.QFormLayout.FieldRole, self.ifObj_comboBox)
 
         self.objReason_label = QtWidgets.QLabel(self.objInfo_groupBox)
         self.objReason_label.setObjectName("objReason_label")
@@ -402,17 +411,19 @@ class Ui_MainWindow(object):
         self.objInfo_formLayout.setWidget(
             3, QtWidgets.QFormLayout.FieldRole, self.objReasonList)
         self.rightPart_verticalLayout.addWidget(self.objInfo_groupBox)
-        
+
         # bounding box
 
-        self.BBox = QtWidgets.QGroupBox(self.objInfo_groupBox)
-        self.BBox.setObjectName("BBox")
-        self.BBox.setMaximumWidth(250)
+        # self.BBox = QtWidgets.QGroupBox(self.objInfo_groupBox)
+        # self.BBox.setObjectName("BBox")
+        # self.BBox.setMaximumWidth(250)
 
-        self.bbox_verticalLayout = QtWidgets.QVBoxLayout(self.BBox)
-        self.bbox_verticalLayout.setObjectName("verticalLayout")
+        # self.bbox_verticalLayout = QtWidgets.QVBoxLayout(self.BBox)
+        # self.bbox_verticalLayout.setObjectName("verticalLayout")
 
-        self.bbox_label = QtWidgets.QLabel("Bounding Boxes")
+        self.bbox_label = QtWidgets.QLabel("BBoxes")
+        self.objInfo_formLayout.setWidget(
+            4, QtWidgets.QFormLayout.LabelRole, self.bbox_label)
 
         self.bbox_tableWidget = MyQTableWidget(self.objInfo_groupBox)
         self.bbox_tableWidget.setGeometry(QtCore.QRect(30, 200, 256, 192))
@@ -425,14 +436,13 @@ class Ui_MainWindow(object):
         self.bbox_tableWidget.setHorizontalHeaderItem(1, item)
 
         bbox_header = self.bbox_tableWidget.horizontalHeader()
-        bbox_header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        bbox_header.setSectionResizeMode(
+            QtWidgets.QHeaderView.ResizeToContents)
         bbox_header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
 
-        self.bbox_verticalLayout.addWidget(self.bbox_label)
-        self.bbox_verticalLayout.addWidget(self.bbox_tableWidget)
-
+        # self.bbox_verticalLayout.addWidget(self.bbox_label)
         self.objInfo_formLayout.setWidget(
-            4, QtWidgets.QFormLayout.LabelRole, self.BBox)
+            4, QtWidgets.QFormLayout.FieldRole, self.bbox_tableWidget)
 
         # reset, delete, save button for single object
         self.objBtns_groupBox1 = QtWidgets.QGroupBox(self.Right)
@@ -441,7 +451,8 @@ class Ui_MainWindow(object):
 
         self.objBtns_horizontalLayout1 = QtWidgets.QHBoxLayout(
             self.objBtns_groupBox1)
-        self.objBtns_horizontalLayout1.setObjectName("objBtns_horizontalLayout1")
+        self.objBtns_horizontalLayout1.setObjectName(
+            "objBtns_horizontalLayout1")
 
         # self.resetObjBtn = QtWidgets.QPushButton(self.objBtns_groupBox1)
         # self.resetObjBtn.setObjectName("resetObjBtn")
@@ -450,6 +461,35 @@ class Ui_MainWindow(object):
         # self.delBoxBtn = QtWidgets.QPushButton(self.objBtns_groupBox1)
         # self.delBoxBtn.setObjectName("delBoxBtn")
         # self.objBtns_horizontalLayout1.addWidget(self.delBoxBtn)
+
+        # self.BBox = QtWidgets.QGroupBox(self.objInfo_groupBox)
+        # self.BBox.setObjectName("BBox")
+        # self.BBox.setMaximumWidth(250)
+
+        # self.bbox_verticalLayout = QtWidgets.QVBoxLayout(self.BBox)
+        # self.bbox_verticalLayout.setObjectName("verticalLayout")
+
+        # self.bbox_label = QtWidgets.QLabel("Bounding Boxes")
+
+        # self.bbox_tableWidget = MyQTableWidget(self.objInfo_groupBox)
+        # self.bbox_tableWidget.setGeometry(QtCore.QRect(30, 200, 256, 192))
+        # self.bbox_tableWidget.setObjectName("bboxtableWidget")
+        # self.bbox_tableWidget.setColumnCount(2)
+        # self.bbox_tableWidget.setRowCount(0)
+        # item = QtWidgets.QTableWidgetItem()
+        # self.bbox_tableWidget.setHorizontalHeaderItem(0, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # self.bbox_tableWidget.setHorizontalHeaderItem(1, item)
+
+        # bbox_header = self.bbox_tableWidget.horizontalHeader()
+        # bbox_header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        # bbox_header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+
+        # self.bbox_verticalLayout.addWidget(self.bbox_label)
+        # self.bbox_verticalLayout.addWidget(self.bbox_tableWidget)
+
+        # self.objInfo_formLayout.setWidget(
+        #     4, QtWidgets.QFormLayout.LabelRole, self.BBox)
 
         self.addObjBtn = QtWidgets.QPushButton(self.objBtns_groupBox1)
         self.addObjBtn.setObjectName("addObjBtn")
@@ -479,14 +519,16 @@ class Ui_MainWindow(object):
         obj_header.setSectionResizeMode(
             QtWidgets.QHeaderView.ResizeToContents)
         obj_header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
-        
+
         # del, edit, save buttons for objects list
         self.objBtns_groupBox2 = QtWidgets.QGroupBox(self.Right)
         self.objBtns_groupBox2.setTitle("")
         self.objBtns_groupBox2.setObjectName("objBtns_groupBox2")
 
-        self.objBtns_horizontalLayout2 = QtWidgets.QHBoxLayout(self.objBtns_groupBox2)
-        self.objBtns_horizontalLayout2.setObjectName("objBtns_horizontalLayout2")
+        self.objBtns_horizontalLayout2 = QtWidgets.QHBoxLayout(
+            self.objBtns_groupBox2)
+        self.objBtns_horizontalLayout2.setObjectName(
+            "objBtns_horizontalLayout2")
 
         # self.delObjBtn = QtWidgets.QPushButton(self.objBtns_groupBox2)
         # self.delObjBtn.setObjectName("delObjBtn")
@@ -539,7 +581,8 @@ class Ui_MainWindow(object):
         self.NewBoxBtn.setShortcut(_translate("MainWindow", "Ctrl+B"))
 
         # basic information group
-        self.basicInfoGroup.setTitle(_translate("MainWindow", "Basic Information"))
+        self.basicInfoGroup.setTitle(
+            _translate("MainWindow", "Basic Information"))
         self.basicInfoGroup.setStyleSheet('QGroupBox:title {'
                                           'border: 1px solid lightgray;'
                                           'border-radius: 5px;'
@@ -553,7 +596,8 @@ class Ui_MainWindow(object):
         self.endFrame_label.setText(_translate("MainWindow", "End Frame"))
         self.endFrame_label.setStatusTip(
             "Clip end frame. Format: 6-digit number starts with 0, e.g. 000055.")
-        self.crashStartFrame_label.setText(_translate("MainWindow", "Crash Start Frame"))
+        self.crashStartFrame_label.setText(
+            _translate("MainWindow", "Crash Start Frame"))
         self.crashStartFrame_label.setStatusTip(
             "The frame you think the car crash is evitable. Format: 6-digit number starts with 0, e.g. 000050.")
 
@@ -564,7 +608,8 @@ class Ui_MainWindow(object):
         self.weather_label.setText(_translate("MainWindow", "Weather"))
         self.weather_label.setStatusTip(
             "Rainy: If it's rainy; Snowy: if the road is covered by snow; Normal: others.")
-        self.weather_comboBox.setItemText(0, _translate("MainWindow", "Normal"))
+        self.weather_comboBox.setItemText(
+            0, _translate("MainWindow", "Normal"))
         self.weather_comboBox.setItemText(1, _translate("MainWindow", "Rainy"))
         self.weather_comboBox.setItemText(2, _translate("MainWindow", "Snowy"))
 
@@ -576,7 +621,8 @@ class Ui_MainWindow(object):
 
         # self.delEgoReasonBtn.setText(_translate("MainWindow", "Delete"))
 
-        self.egoReason_label.setText(_translate("MainWindow", "Ego Car Reason"))
+        self.egoReason_label.setText(
+            _translate("MainWindow", "Ego Car Reason"))
         self.egoReason_comboBox.setItemText(
             0, _translate("MainWindow", "none"))
         self.egoReason_comboBox.setItemText(
@@ -604,9 +650,8 @@ class Ui_MainWindow(object):
         self.egoReason_comboBox.setItemText(
             12, _translate("MainWindow", "obstacles on the road"))
 
-
-        # self.reason_note.setText("If ego car is not involved, choose 'None'; 
-        # If you choose 'Hard to define' or 'No fault', 
+        # self.reason_note.setText("If ego car is not involved, choose 'None';
+        # If you choose 'Hard to define' or 'No fault',
         # do not choose other reason. Multiple choice except the above situation.")
 
         self.basicEditBtn.setText(_translate("MainWindow", "Edit"))
@@ -617,7 +662,7 @@ class Ui_MainWindow(object):
         self.prev5Btn.setShortcut(_translate("MainWindow", 'A'))
         self.prev5Btn.setStatusTip(
             "Check the frame which is 5 frames before current frame. Shortcut [A]")
-        
+
         self.prevBtn.setText(_translate("MainWindow", "< Prev"))
         self.prevBtn.setShortcut(_translate("MainWindow", 'S'))
         self.prevBtn.setStatusTip(
@@ -633,31 +678,37 @@ class Ui_MainWindow(object):
         self.next5Btn.setStatusTip(
             "Check the frame which is 5 frames after current frame. Shortcut [F]")
 
-        self.setStartBtn.setText(_translate("MainWindow", "set as Start Frame"))
+        self.setStartBtn.setText(_translate(
+            "MainWindow", "set as Start Frame"))
         self.setStartBtn.setStatusTip(
             "Set current frame as the clip start frame.")
         self.setEndBtn.setText(_translate("MainWindow", "set as End Frame"))
         self.setEndBtn.setStatusTip(
             "Set current frame as the clip end frame.")
-        self.setCrashStartBtn.setText(_translate("MainWindow", "set as Crash Start Frame"))
+        self.setCrashStartBtn.setText(_translate(
+            "MainWindow", "set as Crash Start Frame"))
         self.setCrashStartBtn.setStatusTip(
             "Set current frame as the crash start frame, which means the accident is about to happed.")
 
-        self.objInfo_groupBox.setTitle(_translate("MainWindow", "Objects Information"))
+        self.objInfo_groupBox.setTitle(
+            _translate("MainWindow", "Objects Information"))
         self.objInfo_groupBox.setStyleSheet('QGroupBox:title {'
-                      'border: 1px solid lightgray;'
-                      'border-radius: 5px;'
-                      'subcontrol-position: top center;'
-                      'margin-top: 5px;'
-                      'padding-left: 10px;'
-                      'padding-right: 10px; }')
+                                            'border: 1px solid lightgray;'
+                                            'border-radius: 5px;'
+                                            'subcontrol-position: top center;'
+                                            'margin-top: 5px;'
+                                            'padding-left: 10px;'
+                                            'padding-right: 10px; }')
 
         self.objType_label.setText(_translate("MainWindow", "Object Type"))
         self.objTypes_comboBox.setItemText(0, _translate("MainWindow", "Car"))
-        self.objTypes_comboBox.setItemText(1, _translate("MainWindow", "Truck"))
+        self.objTypes_comboBox.setItemText(
+            1, _translate("MainWindow", "Truck"))
         self.objTypes_comboBox.setItemText(2, _translate("MainWindow", "Bike"))
-        self.objTypes_comboBox.setItemText(3, _translate("MainWindow", "Pedestrian"))
-        self.objTypes_comboBox.setItemText(4, _translate("MainWindow", "Animal"))
+        self.objTypes_comboBox.setItemText(
+            3, _translate("MainWindow", "Pedestrian"))
+        self.objTypes_comboBox.setItemText(
+            4, _translate("MainWindow", "Animal"))
 
         self.ifObj_label.setText(_translate("MainWindow", "If Involved"))
         self.ifObj_comboBox.setItemText(0, _translate("MainWindow", "Yes"))
@@ -731,10 +782,11 @@ class Ui_MainWindow(object):
                 }
                 '''
 
-        self.BBox.setStyleSheet(style)
+        # self.BBox.setStyleSheet(style)
         self.playImage_groupBox.setStyleSheet(style)
         self.set_groupBox.setStyleSheet(style)
         self.objBtns_groupBox1.setStyleSheet(style)
         self.objBtns_groupBox2.setStyleSheet(style)
 
-        self.actionOpen_Directory.setText(_translate("MainWindow", "Open Directory"))
+        self.actionOpen_Directory.setText(
+            _translate("MainWindow", "Open Directory"))

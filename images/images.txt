@@ -1,1 +1,0 @@
-000001,000051,000071,Day,Normal,Yes,['unclear view', 'speedy']
