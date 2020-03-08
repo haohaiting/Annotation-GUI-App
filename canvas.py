@@ -52,7 +52,7 @@ class Canvas(QLabel):
             p = QPainter(self)
             br = QBrush(QColor(100, 10, 10, 40))
             p.setBrush(br)
-            print(self.show_top_left, self.show_bottom_right)
+            # print(self.show_top_left, self.show_bottom_right)
             p.drawRect(QRect(self.show_top_left, self.show_bottom_right))
             self.load = False
 
