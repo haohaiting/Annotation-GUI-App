@@ -287,89 +287,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     # Save Basic Info ============================================================
 
-    def checkBasicInfo(self, all_reasons):
-        all_items = []
-        for idx in range(self.EgoReasonList.count()):
-            all_items.append(self.EgoReasonList.item(idx).text())
-
-        # check if the information is complete
-        if self.startFrame_lineEdit.text() is not None \
-                and self.crashStartFrame_lineEdit.text() is not None \
-                and self.endFrame_lineEdit.text() is not None \
-                and self.ifDay_comboBox.currentText() is not None \
-                and self.weather_comboBox.currentText() is not None \
-                and self.ifEgo_comboBox.currentText() is not None \
-                and all_items != []:
-
-            # check the format pattern
-            pattern = "^0\d{5}$"
-            start = re.match(pattern, self.startFrame_lineEdit.text())
-            crash = re.match(pattern, self.crashStartFrame_lineEdit.text())
-            end = re.match(pattern, self.endFrame_lineEdit.text())
-            if start and crash and end:
-                print("[Checked] Frame format is good.")
-            else:
-                self.emsg.showMessage("The format of frames seems wrong.")
-                print("[Error] Save Failed: The format of frames seems wrong.")
-                return False
-            
-            # check the format sequence
-            if self.startFrame_lineEdit.text() < self.crashStartFrame_lineEdit.text() <= self.endFrame_lineEdit.text():
-                print("[Checked] Frame sequence is good.")
-            else:
-                self.emsg.showMessage("The sequence of frames seems wrong.")
-                print("[Error] Save Failed: frame numbers are wrong.")
-                return False
-            
-            if int(self.crashStartFrame_lineEdit.text()) - int(self.startFrame_lineEdit.text()) < 30:
-                self.emsg.showMessage("No more than 3s before car crash.")
-                print("[Error] Save Failed: No more than 3s before car crash..")
-                return False
-
-            if os.path.exists(self.save_path):
-                with open(self.save_path) as f:
-                    lines = f.readlines()
-                    for line in lines:
-                        if line.startswith("0"):
-                            if int(line.split(",")[0]) <= int(self.startFrame_lineEdit.text()) <= int(line.split(",")[2]) or \
-                            int(line.split(",")[0]) <= int(self.endFrame_lineEdit.text()) <= int(line.split(",")[2]):
-                                self.emsg.showMessage(
-                                    "The frames are overlapped with a saved clip, please check.")
-                                print("[Error] Save Failed: frame overlapped with saved ones.")
-                                return False
-
-            # check 
-            if self.ifEgo_comboBox.currentText() == "No":
-                if len(all_reasons) != 1 or all_reasons[0] != "None":
-                    self.emsg.showMessage(
-                        "Reason should be 'None' if ego car not involved.")
-                    print(
-                        "[Error] Reason should be 'None' if ego car is not involved.")
-            else:
-                if "None" in all_reasons:
-                    self.emsg.showMessage(
-                        "Reason should not be 'None' if ego car is involved.")
-                    print(
-                        "[Error] Save Failed: Reason should not include 'None' if ego car is involved.")
-        else:
-            self.emsg.showMessage("Basic information is not complete!")
-            print("[Error] Save Failed: basic information is not completed.")
-            return False
-        return True
-
     def saveBasicInfo(self):
         if not self.dir_name:
             self.emsg.showMessage(
                 "Please load images first.")
             return
 
-        all_items = []
+        all_reasons = []
         for idx in range(self.EgoReasonList.count()):
-            all_items.append(self.EgoReasonList.item(idx).text())
+            all_reasons.append(self.EgoReasonList.item(idx).text())
 
         mode = 'a' if os.path.exists(self.save_path) else 'w'
         # if pass all the check
-        if self.checkBasicInfo(all_items):
+        if self.checkBasicInfo(all_reasons):
             with open(self.save_path, mode) as f:
                 basicInfo = ",".join((self.startFrame_lineEdit.text(),
                                     self.crashStartFrame_lineEdit.text(),
@@ -377,20 +307,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     self.ifDay_comboBox.currentText(),
                                     self.weather_comboBox.currentText(),
                                     self.ifEgo_comboBox.currentText(),
-                                    str(all_items)))
+                                    str(all_reasons)))
                 f.write(basicInfo)
                 f.write("\n")
 
-            # disable editing
-            self.setEnabledBasicInfo(False)
-
-            # boolean var
-            self.savedBasicInfo = True
-
-            # status info
-            print("[Success] Saved basic information!")
-            self.setStatusTip(
-                "The reason exists in the reason list for this ego car.")
+                # disable editing
+                self.setEnabledBasicInfo(False)
+                # boolean var
+                self.savedBasicInfo = True
+                # status info
+                print("[Success] Saved basic information!")
+                self.setStatusTip(
+                    "The reason exists in the reason list for this ego car.")
 
             # data = json.dump(basicInfo, f)
 
@@ -561,7 +489,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def load_bbox(self):
         frame_num = self.fileListWidget.currentItem().text().split(".")[0]
-        print(frame_num)
+        # print(frame_num)
         rowCount = self.bbox_tableWidget.rowCount()
 
         # if the frame is labelled, load the bounding box of current object
@@ -577,11 +505,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
         # otherwise, no bounding box to show
-        print("YES")
         self.canvas.show_top_left = QPoint()
         self.canvas.show_bottom_right = QPoint()
         self.canvas.load = True
-
 
     # Objects-related buttons ============================================================
 
@@ -598,67 +524,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for idx in range(self.objReasonList.count()):
             all_reasons.append(self.objReasonList.item(idx).text())
 
-        if len(all_reasons) == 0:
-            self.emsg.showMessage(
-                "Please select at least one reason for this object.")
-            return
+        if self.check_reasons(_ifobj, all_reasons):
+            # get bouding boxes in sort
+            bboxes, mydict = {}, {}
+            rowCount = self.bbox_tableWidget.rowCount()
+            for row in range(rowCount):
+                frame_num = self.bbox_tableWidget.item(row, 0).text()
+                bbox = self.bbox_tableWidget.item(row, 1).text()
+                mydict[frame_num] = bbox
+            for key in sorted(mydict):
+                bboxes[key] = mydict[key]
 
-        # get bouding boxes in sort
-        bboxes, mydict = {}, {}
-        rowCount = self.bbox_tableWidget.rowCount()
-        for row in range(rowCount):
-            frame_num = self.bbox_tableWidget.item(row, 0).text()
-            bbox = self.bbox_tableWidget.item(row, 1).text()
-            mydict[frame_num] = bbox
-        for key in sorted(mydict):
-            bboxes[key] = mydict[key]
+            crash = int(self.crashStartFrame_lineEdit.text())
+            valid_frames = []
+            for i in range(9, -1, -1):
+                valid_frames.append(str("%06d" % (crash - i * 5)))
+            # print(valid_frame_list)
 
-        crash = int(self.crashStartFrame_lineEdit.text())
-        valid_frame_list = []
-        for i in range(9, -1, -1):
-            valid_frame_list.append(str("%06d" % (crash - i * 5)))
-        print(valid_frame_list)
-        
-        if _ifobj == "Yes":
-            if len(bboxes) < 6:
-                self.emsg.showMessage(
-                    "Please label at least 6 frames for this objects.")
-                return
-            elif set(bboxes.keys()) - set(valid_frame_list) != set():
-                self.emsg.showMessage(
-                    "The labelled frames are not the required ones based on car crash start frame, please check.")
-                return
-            elif self.crashStartFrame_lineEdit.text() not in bboxes.keys():
-                self.emsg.showMessage(
-                    "The labelled frame doesn't include crash start frame.")
-                return
-            # elif np.count_nonzero(np.diff(sorted(np.asarray(list(bboxes.keys()), dtype=int))) == 5) != len(bboxes) - 1:
-            else:
-                for i in range(len(bboxes) - 1):
-                    if int(list(bboxes.keys())[i+1]) - int(list(bboxes.keys())[i]) != 5:
-                        self.emsg.showMessage(
-                            "Please check the interval of the frames")
-                        return
-        else:
-            if set(bboxes.keys()) - set(valid_frame_list) != set():
-                self.emsg.showMessage(
-                    "The labelled frames are not the required ones based on car crash start frame, please check.")
-                return
+            if self.check_frames(_ifobj, bboxes, valid_frames):
+                rowPos = self.obj_tableWidget.rowCount()
+                self.obj_tableWidget.insertRow(rowPos)
+                self.obj_tableWidget.setItem(
+                    rowPos, 0, QTableWidgetItem(_type))
+                self.obj_tableWidget.setItem(
+                    rowPos, 1, QTableWidgetItem(_ifobj))
+                self.obj_tableWidget.setItem(
+                    rowPos, 2, QTableWidgetItem(str(all_reasons)))
+                self.obj_tableWidget.setItem(
+                    rowPos, 3, QTableWidgetItem(str(bboxes)))
 
-        rowPos = self.obj_tableWidget.rowCount()
-        self.obj_tableWidget.insertRow(rowPos)
-        self.obj_tableWidget.setItem(
-            rowPos, 0, QTableWidgetItem(_type))
-        self.obj_tableWidget.setItem(
-            rowPos, 1, QTableWidgetItem(_ifobj))
-        self.obj_tableWidget.setItem(
-            rowPos, 2, QTableWidgetItem(str(all_reasons)))
-        self.obj_tableWidget.setItem(
-            rowPos, 3, QTableWidgetItem(str(bboxes)))
-
-        print("Successfully add an object to object list!")
-        self.setStatusTip("Successfully add an object to object list!")
-        self.resetObj()
+                print("Successfully add an object to object list!")
+                self.setStatusTip("Successfully add an object to object list!")
+                self.resetObj()
 
     def editObjInList(self):
         if len(self.obj_tableWidget.selectedItems()) == 0:
@@ -749,7 +646,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.savedObjects:
             self.resetAll()
 
-    # reset ================================================================================
+    # reset ===============================================================================
 
     def resetAll(self):
         self.resetBasicInfo()
@@ -808,6 +705,150 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.scrollArea.viewport().setProperty(
             "cursor", QCursor(Qt.ArrowCursor))
             pass
+
+    # checks ==============================================================================
+
+    def checkBasicInfo(self, all_reasons):
+        all_reasons = []
+        for idx in range(self.EgoReasonList.count()):
+            all_reasons.append(self.EgoReasonList.item(idx).text())
+        # check if the information is complete
+        if self.check_basic_complete(all_reasons):
+            # check frame_related information
+            if self.check_frame_format() and \
+                self.check_frame_sequence() and \
+                    self.check_3s() and \
+                        self.check_frames_overlap():
+                
+                if_involved = self.ifEgo_comboBox.currentText()
+                # check reasons constraints
+                if self.check_reasons(if_involved, all_reasons):
+                    return True
+        return False
+
+    def check_basic_complete(self, all_reasons):
+        if self.startFrame_lineEdit.text() is not None \
+                and self.crashStartFrame_lineEdit.text() is not None \
+                and self.endFrame_lineEdit.text() is not None \
+                and self.ifDay_comboBox.currentText() is not None \
+                and self.weather_comboBox.currentText() is not None \
+                and self.ifEgo_comboBox.currentText() is not None \
+                and all_reasons != []:
+            return True
+        else:
+            self.emsg.showMessage("Basic information is not complete!")
+            print("[Error] Save Failed: basic information is not completed.")
+            return False
+
+    def check_frame_format(self):
+        pattern = "^0\d{5}$"
+        start = re.match(pattern, self.startFrame_lineEdit.text())
+        crash = re.match(pattern, self.crashStartFrame_lineEdit.text())
+        end = re.match(pattern, self.endFrame_lineEdit.text())
+
+        if start and crash and end:
+            print("[Checked] Frame format is good.")
+            return True
+        else:
+            self.emsg.showMessage("The format of frames seems wrong.")
+            print("[Error] Save Failed: The format of frames seems wrong.")
+            return False
+
+    def check_frame_sequence(self):
+        if self.startFrame_lineEdit.text() < self.crashStartFrame_lineEdit.text() <= self.endFrame_lineEdit.text():
+            print("[Checked] Frame sequence is good.")
+            return True
+        else:
+            self.emsg.showMessage("The sequence of frames seems wrong.")
+            print("[Error] Save Failed: frame numbers are wrong.")
+            return False
+
+    def check_3s(self):
+        if int(self.crashStartFrame_lineEdit.text()) - int(self.startFrame_lineEdit.text()) < 30:
+            self.emsg.showMessage("No more than 3s before car crash.")
+            print("[Error] Save Failed: No more than 3s before car crash..")
+            return False
+        return True
+
+    def check_frames_overlap(self):
+        if os.path.exists(self.save_path):
+            with open(self.save_path) as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line.startswith("0"):
+                        if int(line.split(",")[0]) <= int(self.startFrame_lineEdit.text()) <= int(line.split(",")[2]) or \
+                                int(line.split(",")[0]) <= int(self.endFrame_lineEdit.text()) <= int(line.split(",")[2]):
+                            self.emsg.showMessage(
+                                "The frames are overlapped with a saved clip, please check.")
+                            print(
+                                "[Error] Save Failed: frame overlapped with saved ones.")
+                            return False
+        return True
+
+    def check_reasons(self, if_involved, all_reasons):
+        if len(all_reasons) == 0:
+            self.emsg.showMessage(
+                "Please select at least one reason.")
+            return False
+    
+        if if_involved == "No":
+            if len(all_reasons) != 1 or all_reasons[0] != "none":
+                self.emsg.showMessage(
+                    "Reason should be 'none' if not involved.")
+                print(
+                    "[Error] Reason should be 'none' if not involved.")
+                return False
+        else:
+            if "none" in all_reasons:
+                self.emsg.showMessage(
+                    "Reason should not be 'none' if involved.")
+                print(
+                    "[Error] Save Failed: Reason should not include 'none' if involved.")
+                return False
+            elif len(all_reasons) != 1:
+                if "hard to define" in all_reasons:
+                    self.emsg.showMessage(
+                        "If you set reason as 'hard to define', there should be no other reasons.")
+                    print(
+                        "[Error] Save Failed: Multiple reasons include 'hard to define'.")
+                    return False
+                elif "no fault" in all_reasons:
+                    self.emsg.showMessage(
+                        "If you set reason as 'no fault', there should be no other reasons.")
+                    print(
+                        "[Error] Save Failed: Multiple reasons include 'no fault'.")
+                    return False
+        return True
+
+    def check_frames(self, if_involved, bboxes, valid_frames):
+
+        if if_involved == "Yes":
+            if len(bboxes) < 6:
+                self.emsg.showMessage(
+                    "Please label at least 6 frames for this objects.")
+                return False
+            elif set(bboxes.keys()) - set(valid_frames) != set():
+                self.emsg.showMessage(
+                    "The labelled frames are not the required ones based on car crash start frame, please check.")
+                return False
+            elif self.crashStartFrame_lineEdit.text() not in bboxes.keys():
+                self.emsg.showMessage(
+                    "The labelled frame doesn't include crash start frame.")
+                return False
+            # elif np.count_nonzero(np.diff(sorted(np.asarray(list(bboxes.keys()), dtype=int))) == 5) != len(bboxes) - 1:
+            else:
+                for i in range(len(bboxes) - 1):
+                    if int(list(bboxes.keys())[i+1]) - int(list(bboxes.keys())[i]) != 5:
+                        self.emsg.showMessage(
+                            "Please check the interval of the frames")
+                        return False
+        else:
+            if set(bboxes.keys()) - set(valid_frames) != set():
+                self.emsg.showMessage(
+                    "The labelled frames are not the required ones based on car crash start frame, please check.")
+                return False
+        
+        return True
 
 if __name__ == "__main__":
     import sys
